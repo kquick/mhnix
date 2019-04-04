@@ -64,8 +64,8 @@ let
   jdefs = { inherit pkgs;
             addSrcs = master-srcs;
             parameters = {
-                           systems = [ "x86_64-linux" "x86_64-darwin" ];
-                           ghcvers = [ "ghc864" "ghc844" "ghc822" ];
+                           system = [ "x86_64-linux" "x86_64-darwin" ];
+                           ghcver = [ "ghc864" "ghc844" "ghc822" ];
                          };
             project = gitProject "https://github.com/kquick/mhnix" //
                       {
