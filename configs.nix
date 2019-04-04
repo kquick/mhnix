@@ -112,7 +112,7 @@ let
                    hspec-core = dontCheck super.hspec-core;
                    hspec-meta = dontCheck super.hspec-meta;
                    hspec-tdfa = dontCheck super.hspec-tdfa;
-                 } else {};
+                 } else {}
                 );
             };
           };
