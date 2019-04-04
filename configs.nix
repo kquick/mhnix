@@ -83,9 +83,38 @@ let
             srcs = { inherit matterhorn-src
                              mattermost-api-src
                              mattermost-api-qc-src
-                             aspell-pipe-src; };
+                             aspell-pipe-src;
+            };
             addSrcs = master-srcs;
             parameters = { inherit ghcver system variant; };
+            overrides = {
+              haskell-packages = params: self: super:
+                with pkgs.haskell.lib;
+                {
+                  # mattermost-api tests try to run a sample server; disable
+                  mattermost-api = dontCheck super.mattermost-api;
+
+                  Diff = if builtins.elem ghcver ["ghc822" "ghc844"]
+                         then dontCheck super.Diff  # incompatible with QuickCheck changes
+                         else super.Diff;
+
+                  # Unique 0.4.7.6 is too new for a source override; not in all-cabal-hashes yet.
+                  Unique = self.callPackage ./Unique-0.4.7.6.nix; {};
+
+                  aeson = dontCheck super.aeson; # QuickCheck version incompatibility
+
+                } //
+                (if ghcver == "ghc844"
+                 then {
+                   hspec = dontCheck super.hspec; # needs QuickCheck == 2.12.*
+                   hspec-expectations = dontCheck super.hspec-expectations;
+                   hspec-discover = dontCheck super.hspec-discover;
+                   hspec-core = dontCheck super.hspec-core;
+                   hspec-meta = dontCheck super.hspec-meta;
+                   hspec-tdfa = dontCheck super.hspec-tdfa;
+                 } else {};
+                );
+            };
           };
 
   jobsets = {
