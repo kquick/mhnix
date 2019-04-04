@@ -1,6 +1,6 @@
 { nixpkgs ? <nixpkgs>
 # ---- release arguments ----
-, ghcver ? "ghc863"
+, ghcver ? "ghc864"
 , variant ? "master"
 # ---- release inputs ----
 , matterhorn-src ? null
