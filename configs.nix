@@ -28,19 +28,13 @@ let
                   let variant = params.variant or "master";
                       ghcver = params.ghcver or "ghc864";
                       branch = replacePrefix "latest-" "" variant;
-                      githubsrc = r: { type = "github";
-                                       team = "matterhorn-chat";
-                                       repo = r;
-                                       ref = "master";
-                                       __functor = self: r: self // { ref = r; };
-                                     };
-                      hackageVersion = v: { type = "hackageVersion"; version = v; };
+                      github = githubsrc "matterhorn-chat";
                   in
                   {
                   haskell-packages = {
-                    matterhorn = githubsrc "matterhorn" branch;
-                    mattermost-api = githubsrc "mattermost-api" branch;
-                    mattermost-api-qc = githubsrc "mattermost-api-qc" branch;
+                    matterhorn = github "matterhorn" branch;
+                    mattermost-api = github "mattermost-api" branch;
+                    mattermost-api-qc = github "mattermost-api-qc" branch;
                     aeson = hackageVersion "1.4.2.0";
                   }
                   //
