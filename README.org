@@ -27,3 +27,9 @@ To use:
   #+BEGIN_EXAMPLE
   $ nix-env -i -A matterhorn -f configs.nix
   #+END_EXAMPLE
+
+  To setup a Hydra CI process for Matterhorn:
+
+  1. Create a new project under Hydra
+     a. Set the "Declarative spec file" to "./mh-decl.json"
+     b. Set the "Declarative input type" to "Git checkout" : "https://github.com/kquick/mhnix"
