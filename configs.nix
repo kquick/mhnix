@@ -35,6 +35,7 @@ let
                     matterhorn = github "matterhorn" branch;
                     mattermost-api = github "mattermost-api" branch;
                     mattermost-api-qc = github "mattermost-api-qc" branch;
+                    aspell-pipe = github "aspell-pipe" branch;
                     aeson = hackageVersion "1.4.2.0";
                   }
                   //
