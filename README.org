@@ -1,0 +1,29 @@
+This repository contains build instructions to be used with nix
+(https://nixos.org) to build the Matterhorn chat client
+(https://github.com/matterhorn-chat/matterhorn).  The instructions
+here use devnix (https://github.com/kquick/devnix) to enable both
+local development and Hydra CI builds.
+
+To use:
+
+  1. Checkout this repository
+  2. Modify the ~configs.nix~ if needed to set the source for
+     matterhorn or other packages to any local directory checkouts.
+
+  For a shell environment that can be used to develop Matterhorn:
+
+  #+BEGIN_EXAMPLE
+  $ nix-shell -A matterhorn configs.nix
+  #+END_EXAMPLE
+
+  To build Matterhorn and create a local ~result~ directory with the output:
+
+  #+BEGIN_EXAMPLE
+  $ nix-build -A matterhorn configs.nix
+  #+END_EXAMPLE
+
+  To install Matterhorn for the current user profile:
+
+  #+BEGIN_EXAMPLE
+  $ nix-env -i -A matterhorn -f configs.nix
+  #+END_EXAMPLE
