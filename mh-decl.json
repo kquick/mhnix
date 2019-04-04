@@ -20,6 +20,11 @@
       "value": "https://github.com/NixOS/nixpkgs-channels nixos-unstable",
       "emailresponsible": false
     },
+    "devnix": {
+      "type": "git",
+      "value": "https://github.com/kquick/devnix",
+      "emailresponsible": false
+    },
     "master-tree": {
       "type": "gittree",
       "value": "https://github.com/matterhorn-chat/matterhorn master",

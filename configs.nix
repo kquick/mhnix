@@ -1,7 +1,3 @@
-# let devnix = builtins.fetchTarball { url = https://api.github.com/repos/kquick/devnix/tarball; }; in
-let devnix = /home/kquick/Projects/devnix; in
-with (import devnix);
-
 { nixpkgs ? <nixpkgs>
 # ---- release arguments ----
 , ghcver ? "ghc863"
@@ -19,9 +15,12 @@ with (import devnix);
 , system ? null
 , pkgOverrides ? null
 , freshHaskellHashes ? false
-, pkgs ? defaultPkgs nixpkgs system pkgOverrides freshHaskellHashes
+, devnix ? builtins.fetchTarball { url = https://api.github.com/repos/kquick/devnix/tarball; }
+, pkgs ? (import devnix).defaultPkgs nixpkgs system pkgOverrides freshHaskellHashes
 , project ? null # unused, but needed to cause a rebuild on hydra if this repo changes.
 }:
+
+with (import devnix);
 
 let
 
