@@ -27,7 +27,7 @@ let
   master-srcs = params:
                   let variant = params.variant or "master";
                       ghcver = params.ghcver or "ghc864";
-                      branch = replacePrefix "latest-" "" variant;
+                      branch = removeSuffix "-latest" variant;
                       github = githubsrc "matterhorn-chat";
                   in
                   {
@@ -46,7 +46,7 @@ let
                        };
                    in {
                         "develop" = develop;
-                        "latest-develop" = develop;
+                        "develop-latest" = develop;
                       }."${variant}" or {})
                   //
                   ({ "ghc822" = { cereal = hackageVersion "0.5.8.0"; };
@@ -122,8 +122,8 @@ let
     jobsets = mkJobsetsDrv pkgs
       (map mkJobset
       [
-      (jdefs // { variant = "latest-master";  })
-      (jdefs // { variant = "latest-develop"; })
+      (jdefs // { variant = "master-latest";  })
+      (jdefs // { variant = "develop-latest"; })
       (jdefs // { variant = "master";  gitTree = master-tree;  })
       (jdefs // { variant = "develop"; gitTree = develop-tree; })
       ]);
@@ -131,9 +131,9 @@ let
 
   packagesets = {
     master = mkRelease (rdefs // { gitTree = master-tree; });
-    latest-master = mkRelease rdefs;
+    master-latest = mkRelease rdefs;
     develop = mkRelease (rdefs // { gitTree = develop-tree; });
-    latest-develop = mkRelease rdefs;
+    develop-latest = mkRelease rdefs;
   };
 
 in if hydra-jobsets then jobsets else packagesets."${variant}"
