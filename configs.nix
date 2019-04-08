@@ -42,11 +42,14 @@ let
                   (let develop =
                        {
                          brick = hackageVersion "0.47";
-                         freshHaskellHashes = true;  # for brick 0.47
+                         # freshHaskellHashes = true;  # for brick 0.47
                        };
+                       master = { brick = hackageVersion "0.46"; };
                    in {
                         "develop" = develop;
                         "develop-latest" = develop;
+                        "master" = master;
+                        "master-latest" = master;
                       }."${variant}" or {})
                   //
                   ({ "ghc822" = { cereal = hackageVersion "0.5.8.0"; };
