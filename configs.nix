@@ -65,22 +65,7 @@ let
                            system = [ "x86_64-linux" "x86_64-darwin" ];
                            ghcver = [ "ghc864" "ghc844" "ghc822" ];
                          };
-            project = gitProject "https://github.com/kquick/mhnix" //
-                      {
-                        entrypoint = "./configs.nix";
-                        extraReleaseInputs = {
-                          master-tree = {
-                            type = "gittree";
-                            value = "git@semmc-github:GaloisInc/semmc master";
-                            emailresponsible = false;
-                          };
-                          develop-tree = {
-                            type = "gittree";
-                            value = "https://github.com/matterhorn-chat/matterhorn develop";
-                            emailresponsible = false;
-                          };
-                        };
-                      };
+            project = gitProjectFromDecl ./mh-decl.json;
           };
 
   rdefs = { inherit pkgs;
