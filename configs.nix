@@ -106,15 +106,15 @@ let
             };
           };
 
-  jobsets = {
+  jobsets =
+  {
     jobsets = mkJobsetsDrv pkgs
-      (map mkJobset
-      [
-      (jdefs // { variant = "master-latest";  })
-      (jdefs // { variant = "develop-latest"; })
-      (jdefs // { variant = "master";  gitTree = master-tree;  })
-      (jdefs // { variant = "develop"; gitTree = develop-tree; })
-      ]);
+    [
+      (mkJobset (jdefs // { variant = "master-latest";  }))
+      (mkJobset (jdefs // { variant = "develop-latest";  }))
+      (enableEmail (mkJobset (jdefs // { variant = "master";  gitTree = master-tree; })))
+      (enableEmail (mkJobset (jdefs // { variant = "develop"; gitTree = develop-tree; })))
+    ];
   };
 
   packagesets = {
