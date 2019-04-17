@@ -44,7 +44,7 @@ let
                          brick = hackageVersion "0.47";
                          freshHaskellHashes = true;  # for brick 0.47
                        };
-                       master = develop;  # same for now
+                       master = {};
                    in {
                         "develop" = develop;
                         "develop-latest" = develop;
