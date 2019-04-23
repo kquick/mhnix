@@ -62,7 +62,7 @@ let
   jdefs = { inherit pkgs;
             addSrcs = master-srcs;
             parameters = {
-                           system = [ "x86_64-linux" "x86_64-darwin" ];
+                           system = [ "x86_64-linux" ]; # "x86_64-darwin" ];
                            ghcver = [ "ghc864" "ghc844" "ghc822" ];
                          };
             project = gitProjectFromDecl ./mh-decl.json;
