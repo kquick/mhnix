@@ -52,7 +52,10 @@ let
                         "master-latest" = master;
                       }."${variant}" or {})
                   //
-                  ({ "ghc822" = { cereal = hackageVersion "0.5.8.0"; };
+                  ({ "ghc822" = {
+                                  cereal = hackageVersion "0.5.8.0";
+                                  skylighting-core = hackageVersion "0.7.6";  # 0.7.7 broken for GHC 8.2.2
+                                };
                      "ghc844" = { cereal = hackageVersion "0.5.8.0"; };
                      # ghc 8.6.x does not need a cereal override
                    }."${ghcver}" or {});
