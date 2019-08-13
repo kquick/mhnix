@@ -98,6 +98,7 @@ let
                          else super.Diff;
 
                   aeson = dontCheck super.aeson; # QuickCheck version incompatibility
+                  Unique = notBroken super.Unique;
 
                 } //
                 (if ghcver == "ghc844"
