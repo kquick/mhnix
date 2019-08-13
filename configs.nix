@@ -17,6 +17,7 @@ in
 # ---- standard inputs ----
 , system ? null
 , pkgOverrides ? null
+, hydraRun ? false
 , freshHaskellHashes ? false
 , devnix ? builtins.fetchTarball { url = https://api.github.com/repos/kquick/devnix/tarball; }
 , pkgs ? import nixpkgs ((import devnix).defaultPkgArgs system pkgOverrides freshHaskellHashes)
@@ -36,7 +37,7 @@ let
     in
       {
         haskell-packages = {
-          matterhorn = github "matterhorn" branch // { local = /home/kquick/work/Matterhorn/matterhorn; };
+          matterhorn = github "matterhorn" branch;
           mattermost-api = github "mattermost-api" branch;
           mattermost-api-qc = github "mattermost-api-qc" branch;
           aspell-pipe = github "aspell-pipe";
@@ -76,7 +77,7 @@ let
             project = gitProjectFromDecl ./mh-decl.json;
           };
 
-  rdefs = { inherit pkgs;
+  rdefs = { inherit pkgs hydraRun;
             srcs = {
               inherit matterhorn-src
                 mattermost-api-src
