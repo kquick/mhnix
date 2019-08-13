@@ -27,42 +27,44 @@ with (import devnix);
 
 let
 
-  master-srcs = params:
-                  let variant = params.variant or "master";
-                      ghcver = params.ghcver or "ghc864";
-                      branch = removeSuffix "-latest" variant;
-                      github = githubsrc "matterhorn-chat";
-                  in
-                  {
-                  haskell-packages = {
-                    matterhorn = github "matterhorn" branch;
-                    mattermost-api = github "mattermost-api" branch;
-                    mattermost-api-qc = github "mattermost-api-qc" branch;
-                    aspell-pipe = github "aspell-pipe";
-                    aeson = hackageVersion "1.4.2.0";
-                  }
-                  //
-                  (let develop =
-                       {
-                         brick = hackageVersion "0.47";
-                         freshHaskellHashes = true;  # for brick 0.47
-                       };
-                       master = develop;
-                   in {
-                        "develop" = develop;
-                        "develop-latest" = develop;
-                        "master" = master;
-                        "master-latest" = master;
-                      }."${variant}" or {})
-                  //
-                  ({ "ghc822" = {
-                                  cereal = hackageVersion "0.5.8.0";
-                                  skylighting-core = hackageVersion "0.7.6";  # 0.7.7 broken for GHC 8.2.2
-                                };
-                     "ghc844" = { cereal = hackageVersion "0.5.8.0"; };
-                     # ghc 8.6.x does not need a cereal override
-                   }."${ghcver}" or {});
-                  };
+  master-srcs =
+    params:   # input parameters like variant and ghcver
+    let variant = params.variant or "master";
+        ghcver = params.ghcver or default_ghcver;
+        branch = removeSuffix "-latest" variant;
+        github = githubsrc "matterhorn-chat";
+    in
+      {
+        haskell-packages = {
+          matterhorn = github "matterhorn" branch // { local = /home/kquick/work/Matterhorn/matterhorn; };
+          mattermost-api = github "mattermost-api" branch;
+          mattermost-api-qc = github "mattermost-api-qc" branch;
+          aspell-pipe = github "aspell-pipe";
+          aeson = hackageVersion "1.4.2.0";
+          th-abstraction = hackageVersion "0.2.11.0";
+        }
+        //
+        (let develop =
+               {
+                 brick = hackageVersion "0.47";
+                 freshHaskellHashes = true;  # for brick 0.47
+               };
+             master = develop;
+         in {
+           "develop" = develop;
+           "develop-latest" = develop;
+           "master" = master;
+           "master-latest" = master;
+         }."${variant}" or {})
+        //
+        ({ "ghc822" = {
+             cereal = hackageVersion "0.5.8.0";
+             skylighting-core = hackageVersion "0.7.6";  # 0.7.7 broken for GHC 8.2.2
+           };
+           "ghc844" = { cereal = hackageVersion "0.5.8.0"; };
+           # ghc 8.6.x does not need a cereal override
+         }."${ghcver}" or {});
+      };
 
 
   jdefs = { inherit pkgs;
@@ -75,10 +77,11 @@ let
           };
 
   rdefs = { inherit pkgs;
-            srcs = { inherit matterhorn-src
-                             mattermost-api-src
-                             mattermost-api-qc-src
-                             aspell-pipe-src;
+            srcs = {
+              inherit matterhorn-src
+                mattermost-api-src
+                mattermost-api-qc-src
+                aspell-pipe-src;
             };
             addSrcs = master-srcs;
             parameters = { inherit ghcver system variant; };
