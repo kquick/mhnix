@@ -90,9 +90,6 @@ let
                          then dontCheck super.Diff  # incompatible with QuickCheck changes
                          else super.Diff;
 
-                  # Unique 0.4.7.6 is too new for a source override; not in all-cabal-hashes yet.
-                  Unique = self.callPackage ./Unique-0.4.7.6.nix {};
-
                   aeson = dontCheck super.aeson; # QuickCheck version incompatibility
 
                 } //
