@@ -1,6 +1,9 @@
+let default_ghcver = "ghc865";
+in
+
 { nixpkgs ? <nixpkgs>
 # ---- release arguments ----
-, ghcver ? "ghc864"
+, ghcver ? default_ghcver
 , variant ? "master"
 # ---- release inputs ----
 , matterhorn-src ? null
@@ -65,9 +68,9 @@ let
   jdefs = { inherit pkgs;
             addSrcs = master-srcs;
             parameters = {
-                           system = [ "x86_64-linux" ]; # "x86_64-darwin" ];
-                           ghcver = [ "ghc864" "ghc844" "ghc822" ];
-                         };
+              system = [ "x86_64-linux" ]; # "x86_64-darwin" ];
+              ghcver = [ "ghc865" "ghc844" "ghc822" ];
+            };
             project = gitProjectFromDecl ./mh-decl.json;
           };
 
