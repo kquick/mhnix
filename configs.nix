@@ -67,6 +67,8 @@ let
            "ghc881" = {
              # The nix GHC 8.8 overrides with an undefined symbol for unordered-containers.
              unordered-containers = hackageVersion "0.2.10.0";
+             # Newer microlens needed for monadfail changes.
+             microlens = hackageVersion "0.4.11.2";
            };
          }."${ghcver}" or {});
       };
