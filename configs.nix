@@ -64,6 +64,10 @@ let
            };
            "ghc844" = { cereal = hackageVersion "0.5.8.0"; };
            # ghc 8.6.x does not need a cereal override
+           "ghc881" = {
+             # The nix GHC 8.8 overrides with an undefined symbol for unordered-containers.
+             unordered-containers = hackageVersion "0.2.10.0";
+           };
          }."${ghcver}" or {});
       };
 
