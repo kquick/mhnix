@@ -1,4 +1,5 @@
 {
+    "name": "MatterhornB";
     "project": {
         "checkinterval": 300,
         "schedulingshares": 1,
