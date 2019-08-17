@@ -1,0 +1,37 @@
+{
+    "project": {
+        "checkinterval": 300,
+        "schedulingshares": 1,
+        "emailoverride": "",
+        "keepnr": 3,
+        "inputs": {
+            "nixpkgs": {
+                "type": "git",
+                "value": "https://github.com/NixOS/nixpkgs-channels nixos-unstable",
+                "emailresponsible": false
+            },
+        }
+    },
+    "jobset": {
+        "checkinterval": 300,
+        "nixexprinput": "project",
+        "nixexprpath": "./configs.nix",
+        "inputs": {
+            "project": {
+                "type": "git",
+                "value": "https://github.com/kquick/mhnix",
+                "emailresponsible": false
+            },
+            "nixpkgs": {
+                "type": "git",
+                "value": "https://github.com/NixOS/nixpkgs-channels nixos-unstable",
+                "emailresponsible": false
+            },
+            "devnix": {
+                "type": "git",
+                "value": "https://github.com/kquick/devnix",
+                "emailresponsible": false
+            }
+        }
+    }
+}
