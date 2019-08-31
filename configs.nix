@@ -41,8 +41,6 @@ let
           mattermost-api = github "mattermost-api" branch;
           mattermost-api-qc = github "mattermost-api-qc" branch;
           aspell-pipe = github "aspell-pipe";
-          aeson = hackageVersion "1.4.2.0";
-          th-abstraction = hackageVersion "0.2.11.0";
         }
         //
         ({ "ghc822" = {
