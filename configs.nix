@@ -45,19 +45,6 @@ let
           th-abstraction = hackageVersion "0.2.11.0";
         }
         //
-        (let develop =
-               {
-                 brick = hackageVersion "0.49";
-                 freshHaskellHashes = true;  # for brick 0.47
-               };
-             master = develop;
-         in {
-           "develop" = develop;
-           "develop-latest" = develop;
-           "master" = master;
-           "master-latest" = master;
-         }."${variant}" or {})
-        //
         ({ "ghc822" = {
              cereal = hackageVersion "0.5.8.0";
              skylighting-core = hackageVersion "0.7.6";  # 0.7.7 broken for GHC 8.2.2
@@ -116,7 +103,13 @@ let
                    hspec-meta = dontCheck super.hspec-meta;
                    hspec-tdfa = dontCheck super.hspec-tdfa;
                  } else {}
-                );
+                ) //
+                (let variant = params.variant or "master"; in
+                 if (variant == "develop" || variant == "develop-latest")
+                 then {
+                   brick = self.callPackage ./brick_0_49.nix {};
+                 } else {})
+              ;
             };
           };
 
