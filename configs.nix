@@ -105,7 +105,7 @@ let
                 (let variant = params.variant or "master"; in
                  if (variant == "develop" || variant == "develop-latest")
                  then {
-                   brick = self.callPackage ./brick_0_49.nix {};
+                   brick = self.callPackage ./brick_0_50.nix {};
                  } else {})
               ;
             };
