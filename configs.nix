@@ -135,4 +135,4 @@ let
     develop-latest = mkRelease rdefs;
   };
 
-in if hydra-jobsets then jobsets else packagesets."${variant}" or packagesets.master
+in if hydra-jobsets then jobsets else packagesets."${variant}" or packagesets.master-latest
