@@ -35,7 +35,7 @@ let
         ghcver = params.ghcver or default_ghcver;
         branch = let bvp = assocEqListLookup "branch=" variantParts;
                  in if bvp == null
-                    then splitBy removeSuffix "-latest" variant
+                    then removeSuffix "-latest" variant
                     else bvp;
         github = githubsrc "matterhorn-chat";
     in
