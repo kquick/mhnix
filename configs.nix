@@ -31,8 +31,12 @@ let
   master-srcs =
     params:   # input parameters like variant and ghcver
     let variant = params.variant or "master";
+        variantParts = splitBy "\\|" variant;
         ghcver = params.ghcver or default_ghcver;
-        branch = removeSuffix "-latest" variant;
+        branch = let bvp = assocEqListLookup "branch=" variantParts;
+                 in if bvp == null
+                    then splitBy removeSuffix "-latest" variant
+                    else bvp;
         github = githubsrc "matterhorn-chat";
     in
       {
@@ -103,7 +107,9 @@ let
                  } else {}
                 ) //
                 (let variant = params.variant or "master"; in
-                 if (variant == "develop" || variant == "develop-latest")
+                 if (variant == "develop" ||
+                     variant == "develop-latest" ||
+                     builtins.elem "branch=develop" (splitBy "\\|" variant))
                  then {
                    brick = self.callPackage ./brick_0_50.nix {};
                  } else {})
@@ -129,4 +135,4 @@ let
     develop-latest = mkRelease rdefs;
   };
 
-in if hydra-jobsets then jobsets else packagesets."${variant}"
+in if hydra-jobsets then jobsets else packagesets."${variant}" or packagesets.master
