@@ -60,6 +60,8 @@ let
              microlens = hackageVersion "0.4.11.2";
              # The cabal-doctest_1_0_7 was removed, but not the GHC 8.8 config reference.
              cabal-doctest = hackageVersion "1.0.7";
+             # Newer version of microlens-th needed for new template-haskell compatibility
+             microlens-th = hackageVersion "0.4.3.2";
            };
          }."${ghcver}" or {});
       };
