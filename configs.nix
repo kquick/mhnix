@@ -112,7 +112,11 @@ let
                      builtins.elem "branch=develop" (splitBy "\\|" variant))
                  then {
                    brick = self.callPackage ./brick_0_50.nix {};
-                 } else {})
+                 } else {
+                   # Merged develop to master on 2019 Sep 13, so
+                   # dependencies are the same.
+                   brick = self.callPackage ./brick_0_50.nix {};
+                 })
               ;
             };
           };
