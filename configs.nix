@@ -58,6 +58,8 @@ let
              unordered-containers = hackageVersion "0.2.10.0";
              # Newer microlens needed for monadfail changes.
              microlens = hackageVersion "0.4.11.2";
+             # The cabal-doctest_1_0_7 was removed, but not the GHC 8.8 config reference.
+             cabal-doctest = hackageVersion "1.0.7";
            };
          }."${ghcver}" or {});
       };
