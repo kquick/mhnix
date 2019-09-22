@@ -2,6 +2,7 @@
     "Repos" : [ ("matterhorn", "https://github.com/matterhorn-chat/matterhorn"),
                 ("mattermost-api", "https://github.com/matterhorn-chat/mattermost-api"),
                 ("mattermost-api-qc", "https://github.com/matterhorn-chat/mattermost-api-qc"),
+                ("aspell-pipe", "https://github.com/matterhorn-chat/aspell-pipe"),
     ],
     "Branches" : [ "master", "develop" ],
     "Variables" : {
