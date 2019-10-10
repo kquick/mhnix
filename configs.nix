@@ -64,6 +64,8 @@ let
              cabal-doctest = hackageVersion "1.0.7";
              # Newer version of microlens-th needed for new template-haskell compatibility
              microlens-th = hackageVersion "0.4.3.2";
+             # Newer version of vty for microlens >= 0.4.11 compatibility
+             vty = hackageVersion "5.26";
            };
          }."${ghcver}" or {});
       };
