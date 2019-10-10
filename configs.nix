@@ -108,7 +108,15 @@ let
                    hspec-core = dontCheck super.hspec-core;
                    hspec-meta = dontCheck super.hspec-meta;
                    hspec-tdfa = dontCheck super.hspec-tdfa;
-                 } else {}
+                 } else
+                   (if ghcver == "ghc881"
+                    then {
+                      # The http-media base upper-bound was revised on
+                      # Hackage to allow GHC 8.8, but nix doesn't see
+                      # these revisions, so jailbreak to achieve the
+                      # same result.
+                      http-media = doJailbreak super.http-media;
+                    } else {})
                 ) //
                 (let variant = params.variant or "master"; in
                  if (variant == "develop" ||
