@@ -32,6 +32,11 @@
                 "type": "git",
                 "value": "https://github.com/kquick/devnix",
                 "emailresponsible": false
+            },
+            "freshHaskellHashes": {
+                "type": "path",
+                "value": "https://api.github.com/repos/commercialhaskell/all-cabal-hashes/tarball/hackage",
+                "emailresponsible": false
             }
         }
     }
