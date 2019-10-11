@@ -33,7 +33,7 @@ let
     let variant = params.variant or "master";
         variantParts = splitBy "\\|" variant;
         ghcver = params.ghcver or default_ghcver;
-        branch = let bvp = assocEqListLookup "branch=" variantParts;
+        branch = let bvp = assocEqListLookup "branch" variantParts;
                  in if bvp == null
                     then removeSuffix "-latest" variant
                     else bvp;
