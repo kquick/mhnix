@@ -69,13 +69,15 @@ let
              # Newer version to match microlens-platform
              microlens-mtl = hackageVersion "0.2.0.1";
              # Newer version of vty for microlens >= 0.4.11 compatibility
-             vty = hackageVersion "5.26";
+             # vty = hackageVersion "5.26";
+             vty = pkgs.callPackage ./vty-5.26.nix {};
            };
          }."${ghcver}" or {})
         //
         (if branch == "develop"
          then {
-           vty = hackageVersion "5.26";
+           # vty = hackageVersion "5.26";
+           vty = pkgs.callPackage ./vty-5.26.nix {};
          } else {});
       };
 
