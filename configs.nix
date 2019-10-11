@@ -66,6 +66,8 @@ let
              microlens-th = hackageVersion "0.4.3.2";
              # Newer version to match microlens
              microlens-platform = hackageVersion "0.4.0";
+             # Newer version to match microlens-platform
+             microlens-mtl = hackageVersion "0.2.0.1";
              # Newer version of vty for microlens >= 0.4.11 compatibility
              vty = hackageVersion "5.26";
            };
