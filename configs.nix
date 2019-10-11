@@ -67,7 +67,12 @@ let
              # Newer version of vty for microlens >= 0.4.11 compatibility
              vty = hackageVersion "5.26";
            };
-         }."${ghcver}" or {});
+         }."${ghcver}" or {})
+        //
+        (if branch == "develop"
+         then {
+           vty = hackageVersion "5.26";
+         } else {});
       };
 
 
