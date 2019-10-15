@@ -70,14 +70,14 @@ let
              microlens-mtl = hackageVersion "0.2.0.1";
              # Newer version of vty for microlens >= 0.4.11 compatibility
              # vty = hackageVersion "5.26";
-             vty = pkgs.callPackage ./vty-5.26.nix {};
+             # vty = pkgs.callPackage ./vty-5.26.nix {};
            };
          }."${ghcver}" or {})
         //
         (if branch == "develop"
          then {
            # vty = hackageVersion "5.26";
-           vty = pkgs.callPackage ./vty-5.26.nix {};
+           # vty = pkgs.callPackage ./vty-5.26.nix {};
          } else {});
       };
 
@@ -131,6 +131,7 @@ let
                       # these revisions, so jailbreak to achieve the
                       # same result.
                       http-media = doJailbreak super.http-media;
+                      vty = self.callPackage ./vty-5.26.nix {};
                     } else {})
                 ) //
                 (let variant = params.variant or "master"; in
@@ -139,6 +140,7 @@ let
                      builtins.elem "branch=develop" (splitBy "\\|" variant))
                  then {
                    brick = self.callPackage ./brick_0_50.nix {};
+                   vty = self.callPackage ./vty-5.26.nix {};
                  } else {
                    # Merged develop to master on 2019 Sep 13, so
                    # dependencies are the same.
