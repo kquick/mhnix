@@ -145,6 +145,7 @@ let
                    # Merged develop to master on 2019 Sep 13, so
                    # dependencies are the same.
                    brick = self.callPackage ./brick_0_50.nix {};
+                   vty = self.callPackage ./vty-5.26.nix {};
                  })
               ;
             };
