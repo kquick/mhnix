@@ -6,6 +6,6 @@
     ],
     "Branches" : [ "master", "develop" ],
     "Variables" : {
-        "ghcver" : [ "ghc844", "ghc865", "ghc881" ],
+        "ghcver" : [ "ghc844", "ghc865", "ghc882" ],
     },
 }
