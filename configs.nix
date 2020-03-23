@@ -114,6 +114,23 @@ let
                   aeson = dontCheck super.aeson; # QuickCheck version incompatibility
                   Unique = notBroken (dontCheck super.Unique);
 
+                  # Time-compat v1.9.2.2 has test dependencies on
+                  # base-compat >= 0.10.5 && <0.11, but the newest
+                  # base-compat is 0.11.1, so it will fail to
+                  # configure.  Disabling the tests avoids this
+                  # conflict.  Should be fixed in time-compat 1.9.3.
+                  time-compat =
+                    let spl = builtins.splitVersion super.time-compat.version;
+                        majA = builtins.head spl;
+                        majB = builtins.elemAt spl 1;
+                        minor = builtins.elemAt spl 2;
+                        broken = majA == "1" &&
+                                 (majB < "9" ||  # this works for single digits
+                                  (majB == "9" && minor <= "2"));
+                    in if broken
+                       then dontCheck super.time-compat
+                       else super.time-compat;
+
                 } //
                 (if ghcver == "ghc844"
                  then {
