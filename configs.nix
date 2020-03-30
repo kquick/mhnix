@@ -156,12 +156,12 @@ let
                      variant == "develop-latest" ||
                      builtins.elem "branch=develop" (splitBy "\\|" variant))
                  then {
-                   # brick = self.callPackage ./brick_0_52.nix {};
+                   brick = self.callPackage ./brick_0_52_1.nix {};
                    vty = self.callPackage ./vty-5.28.nix {};
                  } else {
                    # Merged develop to master on 2019 Sep 13, so
                    # dependencies are the same.
-                   # brick = self.callPackage ./brick_0_52.nix {};
+                   brick = self.callPackage ./brick_0_52_1.nix {};
                    vty = self.callPackage ./vty-5.28.nix {};
                  })
               ;
