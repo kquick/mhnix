@@ -32,6 +32,11 @@
                 "type": "git",
                 "value": "https://github.com/kquick/devnix",
                 "emailresponsible": false
+            },
+            "testrun": {
+                "type": "string",
+                "value": "run1",
+                "emailresponsible":  false
             }
         }
     }
