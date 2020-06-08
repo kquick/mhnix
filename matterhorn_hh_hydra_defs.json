@@ -35,7 +35,7 @@
             },
             "testrun": {
                 "type": "string",
-                "value": "run5",
+                "value": "run6",
                 "emailresponsible":  false
             }
         }
