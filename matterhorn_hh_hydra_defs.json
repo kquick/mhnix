@@ -34,8 +34,8 @@
                 "emailresponsible": false
             },
             "testrun": {
-                "type": "string",
-                "value": "run19",
+                "type": "path",
+                "value": "/var/run/briareus/hydra 360",
                 "emailresponsible":  false
             }
         }
