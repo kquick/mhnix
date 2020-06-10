@@ -103,72 +103,73 @@ let
             parameters = { inherit ghcver system variant; };
             overrides = {
               haskell-packages = params: self: super:
-                with pkgs.haskell.lib;
-                {
-                  # mattermost-api tests try to run a sample server; disable
-                  mattermost-api = dontCheck super.mattermost-api;
+                let variantParts = splitBy "\\|" params.variant;
+                    is_develop = (variant == "develop" ||
+                                  variant == "develop-latest" ||
+                                  builtins.elem "branch=develop" variantParts);
+                in {
+                  with pkgs.haskell.lib;
+                  {
+                    # mattermost-api tests try to run a sample server; disable
+                    mattermost-api = dontCheck super.mattermost-api;
 
-                  Diff = if builtins.elem ghcver ["ghc822" "ghc844"]
-                         then dontCheck super.Diff  # incompatible with QuickCheck changes
-                         else super.Diff;
+                    Diff = if builtins.elem ghcver ["ghc822" "ghc844"]
+                           then dontCheck super.Diff  # incompatible with QuickCheck changes
+                           else super.Diff;
 
-                  aeson = dontCheck super.aeson; # QuickCheck version incompatibility
-                  Unique = notBroken (dontCheck super.Unique);
+                    aeson = dontCheck super.aeson; # QuickCheck version incompatibility
+                    Unique = notBroken (dontCheck super.Unique);
 
-                  timezone-olson = self.callPackage ./timezone-olson-0_2_0.nix {};
+                    # Time-compat v1.9.2.2 has test dependencies on
+                    # base-compat >= 0.10.5 && <0.11, but the newest
+                    # base-compat is 0.11.1, so it will fail to
+                    # configure.  Disabling the tests avoids this
+                    # conflict.  Should be fixed in time-compat 1.9.3.
+                    time-compat =
+                      let spl = builtins.splitVersion super.time-compat.version;
+                          majA = builtins.head spl;
+                          majB = builtins.elemAt spl 1;
+                          minor = builtins.elemAt spl 2;
+                          broken = majA == "1" &&
+                                   (majB < "9" ||  # this works for single digits
+                                    (majB == "9" && minor <= "2"));
+                      in if broken
+                         then dontCheck super.time-compat
+                         else super.time-compat;
 
-                  # Time-compat v1.9.2.2 has test dependencies on
-                  # base-compat >= 0.10.5 && <0.11, but the newest
-                  # base-compat is 0.11.1, so it will fail to
-                  # configure.  Disabling the tests avoids this
-                  # conflict.  Should be fixed in time-compat 1.9.3.
-                  time-compat =
-                    let spl = builtins.splitVersion super.time-compat.version;
-                        majA = builtins.head spl;
-                        majB = builtins.elemAt spl 1;
-                        minor = builtins.elemAt spl 2;
-                        broken = majA == "1" &&
-                                 (majB < "9" ||  # this works for single digits
-                                  (majB == "9" && minor <= "2"));
-                    in if broken
-                       then dontCheck super.time-compat
-                       else super.time-compat;
-
-                } //
-                (if ghcver == "ghc844"
-                 then {
-                   hspec = dontCheck super.hspec; # needs QuickCheck == 2.12.*
-                   hspec-expectations = dontCheck super.hspec-expectations;
-                   hspec-discover = dontCheck super.hspec-discover;
-                   hspec-core = dontCheck super.hspec-core;
-                   hspec-meta = dontCheck super.hspec-meta;
-                   hspec-tdfa = dontCheck super.hspec-tdfa;
-                 } else
-                   (if ghcver == "ghc881"
-                    then {
-                      # The http-media base upper-bound was revised on
-                      # Hackage to allow GHC 8.8, but nix doesn't see
-                      # these revisions, so jailbreak to achieve the
-                      # same result.
-                      http-media = doJailbreak super.http-media;
-                      vty = self.callPackage ./vty-5.26.nix {};
-                    } else {})
-                ) //
-                (let variant = params.variant or "master"; in
-                 if (variant == "develop" ||
-                     variant == "develop-latest" ||
-                     builtins.elem "branch=develop" (splitBy "\\|" variant))
-                 then {
-                   brick = self.callPackage ./brick_0_52_1.nix {};
-                   vty = self.callPackage ./vty-5.28.nix {};
-                 } else {
-                   # Merged develop to master on 2019 Sep 13, so
-                   # dependencies are the same.
-                   brick = self.callPackage ./brick_0_52_1.nix {};
-                   vty = self.callPackage ./vty-5.28.nix {};
-                 })
-              ;
-            };
+                  } //
+                  (if ghcver == "ghc844"
+                   then {
+                     hspec = dontCheck super.hspec; # needs QuickCheck == 2.12.*
+                     hspec-expectations = dontCheck super.hspec-expectations;
+                     hspec-discover = dontCheck super.hspec-discover;
+                     hspec-core = dontCheck super.hspec-core;
+                     hspec-meta = dontCheck super.hspec-meta;
+                     hspec-tdfa = dontCheck super.hspec-tdfa;
+                   } else
+                     (if ghcver == "ghc881"
+                      then {
+                        # The http-media base upper-bound was revised on
+                        # Hackage to allow GHC 8.8, but nix doesn't see
+                        # these revisions, so jailbreak to achieve the
+                        # same result.
+                        http-media = doJailbreak super.http-media;
+                        vty = self.callPackage ./vty-5.26.nix {};
+                      } else {})
+                  ) //
+                  (if is_develop
+                   then {
+                     brick = self.callPackage ./brick_0_52_1.nix {};
+                     vty = self.callPackage ./vty-5.28.nix {};
+                     timezone-olson = self.callPackage ./timezone-olson-0_2_0.nix {};
+                   } else {
+                     # Merged develop to master on 2019 Sep 13, so
+                     # dependencies are the same.
+                     brick = self.callPackage ./brick_0_52_1.nix {};
+                     vty = self.callPackage ./vty-5.28.nix {};
+                   })
+                ;
+              };
           };
 
   jobsets =
