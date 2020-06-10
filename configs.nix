@@ -107,7 +107,7 @@ let
                     is_develop = (variant == "develop" ||
                                   variant == "develop-latest" ||
                                   builtins.elem "branch=develop" variantParts);
-                in {
+                in
                   with pkgs.haskell.lib;
                   {
                     # mattermost-api tests try to run a sample server; disable
