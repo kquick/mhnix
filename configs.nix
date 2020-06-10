@@ -45,7 +45,6 @@ let
           mattermost-api = github "mattermost-api" branch;
           mattermost-api-qc = github "mattermost-api-qc" branch;
           aspell-pipe = github "aspell-pipe";
-          timezone-olson = hackageVersion "0.2.0";
         }
         //
         ({ "ghc822" = {
@@ -79,6 +78,7 @@ let
          then {
            # vty = hackageVersion "5.26";
            # vty = pkgs.callPackage ./vty-5.26.nix {};
+           timezone-olson = hackageVersion "0.2.0";
          } else {});
       };
 
@@ -161,7 +161,6 @@ let
                    then {
                      brick = self.callPackage ./brick_0_52_1.nix {};
                      vty = self.callPackage ./vty-5.28.nix {};
-                     timezone-olson = self.callPackage ./timezone-olson-0_2_0.nix {};
                    } else {
                      # Merged develop to master on 2019 Sep 13, so
                      # dependencies are the same.
