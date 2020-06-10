@@ -45,6 +45,7 @@ let
           mattermost-api = github "mattermost-api" branch;
           mattermost-api-qc = github "mattermost-api-qc" branch;
           aspell-pipe = github "aspell-pipe";
+          timezone-olson = hackageVersion "0.2.0";
         }
         //
         ({ "ghc822" = {
@@ -113,6 +114,8 @@ let
 
                   aeson = dontCheck super.aeson; # QuickCheck version incompatibility
                   Unique = notBroken (dontCheck super.Unique);
+
+                  timezone-olson = self.callPackage ./timezone-olson-0_2_0.nix {};
 
                   # Time-compat v1.9.2.2 has test dependencies on
                   # base-compat >= 0.10.5 && <0.11, but the newest
