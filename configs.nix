@@ -45,6 +45,7 @@ let
           mattermost-api = github "mattermost-api" branch;
           mattermost-api-qc = github "mattermost-api-qc" branch;
           aspell-pipe = github "aspell-pipe";
+          timezone-olson = hackageVersion "0.2.0";
         }
         //
         ({ "ghc822" = {
@@ -74,12 +75,26 @@ let
            };
          }."${ghcver}" or {})
         //
-        (if branch == "develop"
-         then {
-           # vty = hackageVersion "5.26";
-           # vty = pkgs.callPackage ./vty-5.26.nix {};
-           timezone-olson = hackageVersion "0.2.0";
-         } else {});
+        attrsWhen (branch == "develop") {
+        }
+        //
+        attrsWhen (branch == "gdritter/multiteam") {
+          aspell-pipe = hackageVersion "0.3";
+          base-compat = hackageVersion "0.10.5";
+          base-compat-batteries = hackageVersion "0.10.5";
+          brick = hackageVersion "0.50.1";
+          # mattermost-api = hackageVersion "50200.2.0";
+          microlens = hackageVersion "0.4.9.1";
+          microlens-ghc = hackageVersion "0.4.9.1";
+          microlens-platform = hackageVersion "0.3.10";
+          microlens-mtl = hackageVersion "0.1.11.1";
+          microlens-th = hackageVersion "0.4.2.3";
+          hashable = hackageVersion "1.2.7.0";
+          semigroups = hackageVersion "0.18.5";
+          vty = hackageVersion "5.25";
+          # time = hackageVersion "1.8.0.4";
+        }
+        ;
       };
 
 
@@ -104,9 +119,11 @@ let
             overrides = {
               haskell-packages = params: self: super:
                 let variantParts = splitBy "\\|" params.variant;
-                    is_develop = (variant == "develop" ||
-                                  variant == "develop-latest" ||
-                                  builtins.elem "branch=develop" variantParts);
+                    branch = let bvp = assocEqListLookup "branch" variantParts;
+                             in if bvp == null
+                                then removeSuffix "-latest" variant
+                                else bvp;
+                    is_develop = branch == "develop";
                 in
                   with pkgs.haskell.lib;
                   {
@@ -138,37 +155,26 @@ let
                          else super.time-compat;
 
                   } //
-                  (if ghcver == "ghc844"
-                   then {
+                  (attrsWhen (ghcver == "ghc844") {
                      hspec = dontCheck super.hspec; # needs QuickCheck == 2.12.*
                      hspec-expectations = dontCheck super.hspec-expectations;
                      hspec-discover = dontCheck super.hspec-discover;
                      hspec-core = dontCheck super.hspec-core;
                      hspec-meta = dontCheck super.hspec-meta;
                      hspec-tdfa = dontCheck super.hspec-tdfa;
-                   } else
-                     (if ghcver == "ghc881"
-                      then {
-                        # The http-media base upper-bound was revised on
-                        # Hackage to allow GHC 8.8, but nix doesn't see
-                        # these revisions, so jailbreak to achieve the
-                        # same result.
-                        http-media = doJailbreak super.http-media;
-                        vty = self.callPackage ./vty-5.26.nix {};
-                      } else {})
+                   }
                   ) //
                   (if is_develop
                    then {
-                     brick = self.callPackage ./brick_0_52_1.nix {};
                      vty = self.callPackage ./vty-5.28.nix {};
+                   } else if (branch == "gdritter/multiteam") then {
+
                    } else {
-                     # Merged develop to master on 2019 Sep 13, so
-                     # dependencies are the same.
-                     brick = self.callPackage ./brick_0_52_1.nix {};
                      vty = self.callPackage ./vty-5.28.nix {};
-                   })
-                ;
-              };
+                   }
+                  )
+              ;
+            };
           };
 
   jobsets =
