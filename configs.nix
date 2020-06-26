@@ -46,6 +46,7 @@ let
           mattermost-api-qc = github "mattermost-api-qc" branch;
           aspell-pipe = github "aspell-pipe";
           timezone-olson = hackageVersion "0.2.0";
+          extra = hackageVersion "1.6.21";  # Unique 0.4.7.7 requires < 1.7
         }
         //
         ({ "ghc822" = {
