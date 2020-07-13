@@ -167,7 +167,8 @@ let
                   ) //
                   (if is_develop
                    then {
-                     vty = self.callPackage ./vty-5.28.nix {};
+                     vty = self.callPackage ./vty-5.29.nix {};
+                     brick = self.callPackage ./brick-0.55.nix {};
                    } else if (branch == "gdritter/multiteam") then {
 
                    } else {
