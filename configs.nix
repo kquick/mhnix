@@ -156,18 +156,22 @@ let
                          else super.time-compat;
 
                   } //
-                  (attrsWhen (ghcver == "ghc844") {
+                  attrsWhen (ghcver == "ghc844") {
                      hspec = dontCheck super.hspec; # needs QuickCheck == 2.12.*
                      hspec-expectations = dontCheck super.hspec-expectations;
                      hspec-discover = dontCheck super.hspec-discover;
                      hspec-core = dontCheck super.hspec-core;
                      hspec-meta = dontCheck super.hspec-meta;
                      hspec-tdfa = dontCheck super.hspec-tdfa;
-                   }
-                  ) //
+                  } //
+                  attrsWhen (builtins.substring 0 6 ghcver == "ghc810") {
+                    http-media = if super.http-media.version == "0.8.0.0"
+                                 then doJailbreak super.http-media
+                                 else super.http-media;
+                  } //
                   (if is_develop
                    then {
-                     vty = self.callPackage ./vty-5.29.nix {};
+                     vty = self.callPackage ./vty-5.30.nix {};
                      brick = self.callPackage ./brick-0.55.nix {};
                    } else if (branch == "gdritter/multiteam") then {
 
